@@ -15,7 +15,7 @@ const createProduct = async (req, res) => {
     try{
     const { name, price, description, stock } = req.body;
     if(!name || !price || !description || !stock){
-        res.status(400).json({message: 'Debes completar los campos obligatorios'})
+       return res.status(400).json({message: 'Debes completar los campos obligatorios'})
     }
     const [ rows ] = await db.query('INSERT INTO products (name, price, description, stock) VALUES(?,?,?,?)', [name, price, description, stock]);
     res.status(201).json({ message: 'Creación exitosa del producto', data: rows});
@@ -30,7 +30,7 @@ const updateProduct = async (req, res) => {
     const id = req.params.id;
     const { price, description } = req.body;
     if(!price || !!description){
-        res.status(400).json({message:'Debes ingresar los datos para actualizar'})
+       return res.status(400).json({message:'Debes ingresar los datos para actualizar'})
     }
     const [ rows ] = await db.query('UPDATE products SET price = ?, description = ? WHERE id = ?', [price, description, id]);
     res.status(200).json({ message: 'Producto actualizado con éxito', data: rows});
