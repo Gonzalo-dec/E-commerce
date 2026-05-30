@@ -1,12 +1,15 @@
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const db = require('../db');
+const db = require('../db')
 
 async function register(req, res){
 try{
     const { name, email, password } = req.body;
+    const [ emailDb ] = await db.query('SELECT * FROM users WHERE email = ?', [email])
     if(!name || !email || !password){
        return res.status(400).json({ message: 'Debes completar los campos obligatorios'})
+    } else if (emailDb.length > 0) {
+       return  res.status(409).json({ messge:'Email ya registrado'})
     }
     const passwordHash = await bcrypt.hash(password, 8);
     const [ rows ] = await db.query('INSERT INTO users (name, email, password) VALUES(?,?,?)', [name, email, passwordHash]);
