@@ -22,7 +22,8 @@ try{
 
     if(response.ok){
         const token = data.token;
-        localStorage.setItem('token', token)
+        localStorage.setItem('token', token);
+        localStorage.setItem('name', data.name)
         window.location.replace('home.html')
     }else{
         alert('Credenciales incorrectas');

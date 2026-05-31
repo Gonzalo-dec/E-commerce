@@ -29,7 +29,7 @@ const updateProduct = async (req, res) => {
     try{
     const id = req.params.id;
     const { price, description } = req.body;
-    if(!price || !!description){
+    if(!price || !description){
        return res.status(400).json({message:'Debes ingresar los datos para actualizar'})
     }
     const [ rows ] = await db.query('UPDATE products SET price = ?, description = ? WHERE id = ?', [price, description, id]);

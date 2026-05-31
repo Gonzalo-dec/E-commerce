@@ -1,0 +1,24 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+}
+h1 {
+    text-align: center;
+    margin-top: 50px;
+    font-family: Arial, sans-serif;
+}
+#session-out {
+    display: block;
+    margin: 20px auto;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+#session-out:hover {
+    opacity: 0.9;
+}

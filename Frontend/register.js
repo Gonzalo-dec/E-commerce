@@ -22,7 +22,6 @@ form.addEventListener('submit', async (event) => {
     })
 
     const data = await response.json();
-    console.log(data);
     
     if(response.ok === true) {
         window.location.replace("home.html")
