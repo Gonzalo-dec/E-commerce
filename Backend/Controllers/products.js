@@ -11,13 +11,23 @@ const getAllProducts = async (req, res) => {
     }
 }
 
+const getProductById = async (req, res) => {
+    try{
+        const id = req.params.id;
+        const [ rows ] = await db.query('SELECT id, name, price, description, stock FROM products  WHERE id = ? ', [id])
+        res.status(200).json({ message:'Producto obtenido con exito', data: rows});
+    }catch(err){
+        console.error(`Error al obtener el producto ${err}`)
+    }
+}
+
 const createProduct = async (req, res) => {
     try{
-    const { name, price, description, stock } = req.body;
-    if(!name || !price || !description || !stock){
+    const { name, price, description, stock, category_id } = req.body;
+    if(!name || !price || !description || !stock || !category_id){
        return res.status(400).json({message: 'Debes completar los campos obligatorios'})
     }
-    const [ rows ] = await db.query('INSERT INTO products (name, price, description, stock) VALUES(?,?,?,?)', [name, price, description, stock]);
+    const [ rows ] = await db.query('INSERT INTO products (name, price, description, stock, category_id) VALUES(?,?,?,?,?)', [name, price, description, stock, category_id]);
     res.status(201).json({ message: 'Creación exitosa del producto', data: rows});
     } catch(err){
         console.error(err);
@@ -50,4 +60,4 @@ const deleteProduct = async (req, res) => {
     }
 }
 
-module.exports = { getAllProducts, createProduct, updateProduct, deleteProduct};
+module.exports = { getAllProducts, getProductById, createProduct, updateProduct, deleteProduct};

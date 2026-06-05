@@ -1,9 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const {getAllProducts, createProduct, updateProduct, deleteProduct} = require('../Controllers/products');
+const {getAllProducts, getProductById, createProduct, updateProduct, deleteProduct} = require('../Controllers/products');
 const autorizar = require('../Middlewares/auth');
 
-router.get('/',  autorizar, getAllProducts);
+router.get('/', getAllProducts);
+
+router.get('/:id', getProductById);
 
 router.post('/',  autorizar, createProduct);
 
