@@ -61,8 +61,10 @@ function mostrarProductos(productos){
         const price = document.createElement('p');
         const description = document.createElement('p');
         const stock = document.createElement('p');
+        const button = document.createElement('button');
 
         div.classList.add('product-card');
+        button.classList.add('buy-btn');
         div.addEventListener('click', () => {
     window.location.href = `product.html?id=${producto.id}`;
 });
@@ -71,11 +73,13 @@ function mostrarProductos(productos){
         price.textContent = `Precio: $${producto.price}`;
         description.textContent = `Description: ${producto.description}`;
         stock.textContent = `Stock: ${producto.stock}`;
+        button.textContent= ('Comprar');
         
         div.appendChild(name);
         div.appendChild(price);
         div.appendChild(description);
         div.appendChild(stock);
+        div.appendChild(button);
         container.appendChild(div);
     })
 }

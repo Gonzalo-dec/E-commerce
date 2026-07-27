@@ -7,6 +7,7 @@ function autorizar(req, res, next){
     }
     try{
     const verificado = jwt.verify(token, process.env.JWT_SECRET)
+    req.user = verificado;
     next();
     }catch(err){
         return res.status(403).json({ message: 'Token invalido o expirado'})

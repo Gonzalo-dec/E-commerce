@@ -1,10 +1,11 @@
 const express = require('express');
-const {getAllOrders, createOrder, deleteOrder} = require('../Controllers/orders');
-const router = express.Router();
+const { getOrdersById, checkout, deleteOrder} = require('../Controllers/orders');
+const autorizar  = require('../Middlewares/auth');
+const router = express.Router(); 
 
-router.get('/', getAllOrders);
+router.get('/', autorizar, getOrdersById);
 
-router.post('/', createOrder);
+router.post('/', autorizar, checkout);
 
 router.delete('/:id', deleteOrder);
 

@@ -22,6 +22,7 @@ const getProductById = async (req, res) => {
 }
 
 const createProduct = async (req, res) => {
+        console.log(req.user);
     try{
     const { name, price, description, stock, category_id } = req.body;
     if(!name || !price || !description || !stock || !category_id){

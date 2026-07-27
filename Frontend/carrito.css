@@ -1,0 +1,43 @@
+#datos-carrito{
+    display: grid;
+    justify-items: center;
+    gap: 20px;
+    padding-top: 20px;
+}
+.cart {
+    display: grid;
+    justify-content: center;
+    min-width: 300px;
+    height: 180px;
+    gap: 16px;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 8px 20px rgba(0,0,0, .15);
+}
+.btn-buy{
+    color: white;
+    width: 50%;
+    padding: 10px;
+    cursor: pointer;
+    background: #2563eb;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: .3s;
+}
+.btn-buy:hover{
+    background: #1d4ed8;
+    transition: .3s;
+}
+.return-home{
+    width: 80px;
+    height: 40px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    box-shadow: inset 0px 8px 20px rgba(0, 0, 0, .15);
+}
+.return-home:hover{
+    background-color: #B4B9C5;
+    transition: 0.3s;
+}

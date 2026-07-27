@@ -1,0 +1,43 @@
+#conteiner-product-venta{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    width: 250px;
+    min-height: 300px;
+    margin: 0 auto;
+    border: none;
+    box-shadow: 0 8px 20px rgba(0,0,0, .15);
+}
+.product-sell{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+.button-sell{
+    color: white;
+    border: none;
+    width: 100%;
+    cursor: pointer;
+    padding: 10px;
+    background: #2563eb;
+    border-radius: 8px;
+    font-weight: 600;
+    margin-top: auto;
+}
+.button-sell:hover{
+ background: #1d4ed8;
+ transition: .3s;
+}
+.return-home{
+    width: 80px;
+    height: 40px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    box-shadow: inset 0px 8px 20px rgba(0, 0, 0, .15);
+}
+.return-home:hover{
+    background-color: #B4B9C5;
+    transition: 0.3s;
+}

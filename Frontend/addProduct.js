@@ -1,5 +1,9 @@
 const button = document.getElementById('submit');
 
+document.querySelector('.return-home').addEventListener('click', () => {
+    window.location.replace('home.html');
+})
+
 async function obtenerCategories(){
     const response = await fetch('http://localhost:3000/categories');
     const data = await response.json();
@@ -28,6 +32,10 @@ button.addEventListener('click', async (e) => {
     const category_id = document.getElementById('categories').value;
     const token = localStorage.getItem("token");
 
+    if(!name || !price || !description || !stock || !category_id){
+        return alert('Debes completar los campos obligatorios');
+    }
+
     const userData = {
         name,
         price,
@@ -44,7 +52,6 @@ button.addEventListener('click', async (e) => {
         body: JSON.stringify(userData)
     });
     const data = await response.json();
-     console.log(data);
      
      document.querySelector('form').reset()
 })

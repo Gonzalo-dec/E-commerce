@@ -13,7 +13,7 @@ const getProductsByCategoryId= async (req, res) => {
     try{
         const category_id = req.params.id;
         const [ rows ] = await db.query(`
-    SELECT p.category_id, p.name, p.price, p.description, p.stock, c.name AS category_name
+    SELECT p.id, p.category_id, p.name, p.price, p.description, p.stock, c.name AS category_name
     FROM products AS p
     JOIN categories AS c ON p.category_id = c.id
     WHERE c.id = ?
