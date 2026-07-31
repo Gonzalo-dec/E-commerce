@@ -1,9 +1,5 @@
 let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
-const returnHome = document.querySelector('.return-home');
 
-returnHome.addEventListener('click', () => {
-    window.location.replace('home.html')
-})
 
 async function obtenerProductoId(){
     const params = new URLSearchParams(window.location.search);
@@ -16,20 +12,21 @@ async function obtenerProductoId(){
 
 function mostrarProductoId(producto){
     const container = document.getElementById('conteiner-product-venta');
-    const button = document.createElement('button');
-    producto.forEach(prod => {
+    const prod = producto[0];
+    
         const div = document.createElement('div')
         const name = document.createElement('h3');
         const price = document.createElement('p');
         const description = document.createElement('p');
         const stock = document.createElement('p');
+        const button = document.createElement('button');
 
         div.classList.add("product-sell");
         button.classList.add("button-sell")
+        
 
         button.addEventListener('click', () => {
         const productoCarrito = carrito.find(p => p.id === prod.id)
-        console.log(productoCarrito);
         if(productoCarrito){
             productoCarrito.cantidad++;
             alert("Producto sumado con éxito");
@@ -40,11 +37,19 @@ function mostrarProductoId(producto){
             localStorage.setItem('carrito', JSON.stringify(carrito));
         })
 
+        if(prod.stock === 0){
+            button.disabled = true;
+            button.textContent = 'Sin stock';
+            div.classList.add('sin-stock');
+            stock.classList.add('no-stock');
+        }else {
+            button.textContent = "Agregar";
+        }
+
         name.textContent = prod.name;
         price.textContent = `Price: $${prod.price}`;
         description.textContent = `Description: ${prod.description}`;
         stock.textContent = `Existencias: ${prod.stock}`;
-        button.textContent = "Agregar";
         
         div.appendChild(name);
         div.appendChild(price);
@@ -52,8 +57,7 @@ function mostrarProductoId(producto){
         div.appendChild(stock);
         div.appendChild(button);
         container.appendChild(div);
-    })
-}
+    }
 
 
 obtenerProductoId();

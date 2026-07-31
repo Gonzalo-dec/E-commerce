@@ -96,7 +96,7 @@ nav {
 }
 #products-container {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 16px;
     padding: 0 24px 24px;
 }
@@ -141,6 +141,10 @@ nav {
 }
 .buy-btn:hover{
     background: #1d4ed8;
+}
+.sin-stock{
+    opacity: .5;
+    cursor: default;
 }
 @media (max-width: 768px) {
     #products-container{

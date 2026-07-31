@@ -7,7 +7,7 @@ const getAllProducts = async (req, res) => {
     const [ rows ] = await db.query('SELECT * FROM products');
     res.status(200).json({ message: 'Productos obtenidos con exito', data: rows});
     } catch(err) {
-        console.error(`Error al obtener productos ${err}`);
+        res.status(500).json({ message: 'Error interno del servidor'});
     }
 }
 

@@ -7,6 +7,6 @@ router.get('/', autorizar, getOrdersById);
 
 router.post('/', autorizar, checkout);
 
-router.delete('/:id', deleteOrder);
+router.delete('/:id', autorizar, deleteOrder);
 
 module.exports = router;

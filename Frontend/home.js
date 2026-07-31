@@ -63,6 +63,16 @@ function mostrarProductos(productos){
         const stock = document.createElement('p');
         const button = document.createElement('button');
 
+        
+
+        if(producto.stock === 0){
+            button.disabled = true;
+            button.textContent = 'Sin stock';
+            div.classList.add('sin-stock');
+        }else {
+            button.textContent = 'Comprar';
+        }
+
         div.classList.add('product-card');
         button.classList.add('buy-btn');
         div.addEventListener('click', () => {
@@ -73,7 +83,7 @@ function mostrarProductos(productos){
         price.textContent = `Precio: $${producto.price}`;
         description.textContent = `Description: ${producto.description}`;
         stock.textContent = `Stock: ${producto.stock}`;
-        button.textContent= ('Comprar');
+        
         
         div.appendChild(name);
         div.appendChild(price);

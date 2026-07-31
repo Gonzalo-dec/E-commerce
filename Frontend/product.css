@@ -2,17 +2,21 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
     gap: 15px;
     width: 250px;
     min-height: 300px;
     margin: 0 auto;
+    margin-top: 60px;
     border: none;
+    border-radius: 8px;
     box-shadow: 0 8px 20px rgba(0,0,0, .15);
 }
 .product-sell{
     display: flex;
     flex-direction: column;
     gap: 20px;
+    height: 100%;
 }
 .button-sell{
     color: white;
@@ -40,4 +44,8 @@
 .return-home:hover{
     background-color: #B4B9C5;
     transition: 0.3s;
+}
+.no-stock{
+    color: red;
+    font-weight: bold;
 }

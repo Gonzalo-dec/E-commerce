@@ -1,8 +1,4 @@
-const button = document.getElementById('submit');
-
-document.querySelector('.return-home').addEventListener('click', () => {
-    window.location.replace('home.html');
-})
+const button = document.getElementById('submit')
 
 async function obtenerCategories(){
     const response = await fetch('http://localhost:3000/categories');

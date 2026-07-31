@@ -1,7 +1,3 @@
-document.querySelector('.return-home').addEventListener('click', () => {
-    window.location.replace('home.html');
-})
-
 async function obtenerProductosCategoria(){
     const params = new URLSearchParams(window.location.search);
     const categoryId = params.get('id');
@@ -9,7 +5,6 @@ async function obtenerProductosCategoria(){
     const response = await fetch(`http://localhost:3000/categories/${categoryId}`)
 
     const data = await response.json();
-    console.log(data);
     mostrarProductosCategoria(data.data)
 }
 
@@ -29,6 +24,15 @@ function mostrarProductosCategoria(productos){
         div.classList.add('product-card')
         button.classList.add('btn')
 
+        if(category.stock === 0){
+            button.disabled = true;
+            button.textContent = 'Sin stock';
+            div.classList.add('sin-stock');
+            button.classList.add('sin-stock');
+        }else {
+            button.textContent = `See more`;
+        }
+
         div.addEventListener('click', () => {
             window.location.href = `product.html?id=${category.id}`;
         })
@@ -36,7 +40,7 @@ function mostrarProductosCategoria(productos){
         price.textContent = `Price: $${category.price}`;
         description.textContent = `Description: ${category.description}`;
         stock.textContent = `Stock: ${category.stock}`;
-        button.textContent = `Go`;
+        
 
         div.appendChild(name);
         div.appendChild(price);

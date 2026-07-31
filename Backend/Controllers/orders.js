@@ -37,23 +37,10 @@ const getOrdersById = async (req, res) => {
     }
 }
 
-const createOrder = async (req, res) => {
-    try{
-        const { user_id, product_id, quantity, total } = req.body;
-        if(!user_id || !product_id || !quantity || !total){
-            res.status(400).json({message: 'Debes ingresar los campos obligatorios'})
-        }
-        const [ rows ] = await db.query('INSERT INTO orders (user_id, product_id, quantity, total) VALUES (?,?,?,?)', [user_id, product_id, quantity, total]);
-        res.status(201).json({ message: 'Transacción exitosa', data: rows});
-    }catch(err){
-        console.error(err);
-        res.status(500).json({message: 'Error interno del servidor', error: err.message});
-    }
-}
-
 const checkout = async (req, res) => {
-        const connection = await db.getConnection();
+    let connection;
     try{
+        connection = await db.getConnection();
         await connection.beginTransaction();
         const userId = req.user.id;
         const { items } = req.body;
@@ -61,6 +48,10 @@ const checkout = async (req, res) => {
         const itemsValidados = [];
         for (const item of items) {
             const [ rows ] = await connection.query('SELECT price, stock FROM products WHERE id = ?', [item.id])
+            if(rows.length == 0){
+                throw new Error('Producto sin existencias');
+            }
+
             if(item.cantidad > rows[0].stock){
                 throw new Error("No hay stock suficiente");
                 
@@ -81,6 +72,8 @@ const checkout = async (req, res) => {
        console.error(err);
        if(err.message === "No hay stock suficiente"){
        return res.status(400).json({ message: err.message});
+       } else if(err.message === 'Producto sin existencias'){
+        return res.status(404).json({ message: err.message});
        }
     res.status(500).json({ message: 'Error interno del servidor'});
     } finally{
@@ -91,10 +84,14 @@ const checkout = async (req, res) => {
 const deleteOrder = async (req, res) => {
     try{
         const id = req.params.id;
-        const [ rows ] = await db.query('DELETE FROM orders WHERE id = ?', [ id ]);
+        const userId = req.user.id;
+        const [ rows ] = await db.query('DELETE FROM orders WHERE id = ? AND user_id = ?', [ id, userId ]);
+        if(rows.affectedRows == 0){
+           return res.status(404).json({ message: 'No tienes permisos para eliminar esta orden o la orden no existe'});
+        }
         res.status(200).json({ message: 'Orden eliminada con éxito', data: rows});
     }catch(err) {
-        console.error(`Error al eliminar la orden ${err}`)
+        res.status(500).json({ message: 'Error interno del servidor'});
     }
 }
 

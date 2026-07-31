@@ -5,14 +5,22 @@
     padding-top: 20px;
 }
 .cart {
-    display: grid;
+    position: relative;
+    display: flex;
+    flex-direction: column;
     justify-content: center;
-    min-width: 300px;
-    height: 180px;
-    gap: 16px;
+    width: 60vw;
+    height: auto;
+    justify-content: start;
+    gap: 20px;
+    padding: 16px 20px;
     border: none;
     border-radius: 8px;
     box-shadow: 0 8px 20px rgba(0,0,0, .15);
+}
+.price{
+    align-self: flex-end;
+    font-size: 18px;
 }
 .btn-buy{
     color: white;
@@ -29,15 +37,42 @@
     background: #1d4ed8;
     transition: .3s;
 }
-.return-home{
-    width: 80px;
-    height: 40px;
-    border-radius: 5px;
+.btn-delete{
+    position: absolute;
+    top: 0;    
+    right: 0;
+    width: 50px;
+    height: 30px;
+    color: white;
+    border-radius: 0 0 0 8px;
+    background: #dc2626;
     border: none;
     cursor: pointer;
-    box-shadow: inset 0px 8px 20px rgba(0, 0, 0, .15);
 }
-.return-home:hover{
-    background-color: #B4B9C5;
-    transition: 0.3s;
+.btn-delete:hover{
+    background: #960c0c;
+}
+.description{
+    font-weight: 100;
+}
+.quantity-selector{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.quantity-selector input{
+    width: 60px;
+    text-align: center;
+}
+.quantity-selector button{
+    width: 30px;
+    height: 30px;
+}
+.quantity-selector button:hover{
+    cursor: pointer;
+}
+.quantity-selector input::-webkit-outer-spin-button,
+.quantity-selector input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }
