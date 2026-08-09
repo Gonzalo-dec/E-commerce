@@ -36,6 +36,27 @@ const getOrdersById = async (req, res) => {
         res.status(500).json({ message: 'Error interno del servidor'})
     }
 }
+const getSalesBySeller = async (req, res) => {
+    try{
+        const sellerId = req.user.id;
+        const [ orders ] = await db.query('SELECT * FROM orders WHERE seller_id = ? ORDER BY created_at DESC', [sellerId]);
+        const [ itemsOrder] = await db.query(`SELECT p.name AS product_name, oi.unit_price, oi.quantity, oi.order_id, u.name AS buyer_name, o.total
+            FROM order_items AS oi
+            JOIN products AS p ON oi.product_id = p.id
+            JOIN orders AS o ON oi.order_id = o.id
+            JOIN users AS u ON o.user_id = u.id WHERE o.seller_id = ?
+            `, [ sellerId]);
+            const ordersWithItems = orders.map(order => ({
+            ...order,
+            items: itemsOrder.filter(item => item.order_id == order.id)
+        })
+        )
+        res.status(200).json({ message: 'Ventas obtenidas con éxito', data: ordersWithItems});
+    }catch(err){
+        console.error(`Error al obtener las ventas, error: ${err}`);
+        res.status(500).json({message: 'Error interno del servidor'});
+    }
+}
 
 const checkout = async (req, res) => {
     let connection;
@@ -44,10 +65,9 @@ const checkout = async (req, res) => {
         await connection.beginTransaction();
         const userId = req.user.id;
         const { items } = req.body;
-        let total = 0;
         const itemsValidados = [];
         for (const item of items) {
-            const [ rows ] = await connection.query('SELECT price, stock FROM products WHERE id = ?', [item.id])
+            const [ rows ] = await connection.query('SELECT price, stock, user_id FROM products WHERE id = ?', [item.id])
             if(rows.length == 0){
                 throw new Error('Producto sin existencias');
             }
@@ -56,17 +76,30 @@ const checkout = async (req, res) => {
                 throw new Error("No hay stock suficiente");
                 
             }
-            total += rows[0].price * item.cantidad;
-            itemsValidados.push({ product_id: item.id, quantity: item.cantidad, unit_price: rows[0].price})
+            itemsValidados.push({ product_id: item.id, quantity: item.cantidad, unit_price: rows[0].price, seller_id: rows[0].user_id})
         }
-        const [ result ] = await connection.query('INSERT INTO orders (user_id, total) VALUES(?, ?)', [userId, total])
-        
-        for(const item of itemsValidados){
+        const itemsBySeller = {};
+        for(const items of itemsValidados){
+                if(!itemsBySeller[items.seller_id]){
+                    itemsBySeller[items.seller_id] = [];
+                }
+                
+                itemsBySeller[items.seller_id].push(items);
+            }
+        const idSellers = [];
+        for(const [seller_id, items] of Object.entries(itemsBySeller)){
+            const total = items.reduce((acumulador, numeroActual) => {
+                return acumulador + numeroActual.quantity * numeroActual.unit_price;
+            }, 0);
+            const [ result ] = await connection.query('INSERT INTO orders (user_id, seller_id, total) VALUES (?,?,?)', [userId, Number(seller_id), total]);
+            for(const item of items){
             await connection.query('INSERT INTO order_items (product_id, quantity, unit_price, order_id) VALUES(?, ?, ?, ?)', [item.product_id, item.quantity, item.unit_price, result.insertId]);
             await connection.query('UPDATE products SET stock = stock - ? WHERE id = ?', [item.quantity, item.product_id]);
         }
+        idSellers.push({ order_id: result.insertId});
+    }
         await connection.commit();
-        res.status(201).json({ message: 'Compra realizada con éxito', data: result.insertId})
+        res.status(201).json({ message: 'Compra realizada con éxito', data: idSellers});
     }catch(err){
        await connection.rollback();
        console.error(err);
@@ -95,4 +128,4 @@ const deleteOrder = async (req, res) => {
     }
 }
 
-module.exports = {  getOrdersById, checkout, deleteOrder };
+module.exports = {  getOrdersById, getSalesBySeller, checkout, deleteOrder };

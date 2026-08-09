@@ -22,13 +22,12 @@ const getProductById = async (req, res) => {
 }
 
 const createProduct = async (req, res) => {
-        console.log(req.user);
     try{
     const { name, price, description, stock, category_id } = req.body;
     if(!name || !price || !description || !stock || !category_id){
        return res.status(400).json({message: 'Debes completar los campos obligatorios'})
     }
-    const [ rows ] = await db.query('INSERT INTO products (name, price, description, stock, category_id) VALUES(?,?,?,?,?)', [name, price, description, stock, category_id]);
+    const [ rows ] = await db.query('INSERT INTO products (name, price, description, stock, category_id, user_id) VALUES(?,?,?,?,?,?)', [name, price, description, stock, category_id, req.user.id]);
     res.status(201).json({ message: 'Creación exitosa del producto', data: rows});
     } catch(err){
         console.error(err);
