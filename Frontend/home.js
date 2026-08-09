@@ -1,3 +1,5 @@
+let productosGlobal = [];
+
 function verifyToken(){
 const token = localStorage.getItem('token')
 if(token === null){
@@ -48,6 +50,10 @@ async function obtenerProductos(){
     });
     const data = await response.json();
     mostrarProductos(data.data)
+    productosGlobal = data.data;
+    const nav = document.querySelector('nav');
+    const navRight = document.querySelector('.nav-right');
+    nav.insertBefore(input, navRight);
     }catch(err){
         console.error('Error getting products', err);
     }
@@ -55,6 +61,7 @@ async function obtenerProductos(){
 
 function mostrarProductos(productos){
     const container = document.getElementById('products-container');
+    container.innerHTML = "";
     productos.forEach(producto => {
         const div = document.createElement('div')
         const name = document.createElement('h3');
@@ -94,6 +101,16 @@ function mostrarProductos(productos){
     })
 }
 
+const input = document.createElement('input');
+input.classList.add('input-search');
+input.type = 'text';
+input.placeholder = 'Buscar...';
+input.addEventListener('input', (e) => {
+    const textSearch = e.target.value;
+    const result = textSearch.toLowerCase();
+    const search = productosGlobal.filter(i => i.name.toLowerCase().includes(result));
+    mostrarProductos(search);
+})
 obtenerProductos();
 
 function welcomeUser(){

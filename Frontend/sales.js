@@ -1,32 +1,32 @@
-const container = document.querySelector('.container-orders');
+const container = document.getElementById('container-sales');
 
-async function getOrders() {
-    try {
+async function getSales () {
+    try{
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:3000/orders', {
+        const response = await fetch('http://localhost:3000/orders/sales', {
             headers: {
                 authorization: token
             }
-        }); 
-        const data = await response.json(); 
-        showOrders(data.data)
-    } catch (error) { 
-        console.error("Error al obtener órdenes:", error);
+        });
+        const data = await response.json();
+        showSales(data.data)
+    }catch(err){
+        console.error('Error al obtener ventas', err);
     }
 }
 
-function showOrders(orders){
-    orders.forEach(order => {
+function showSales(sales){
+    sales.forEach(sale => {
         const div = document.createElement('div');
         const divHeader = document.createElement('div');
-        const title = document.createElement('h2');
+        const nOrder = document.createElement('h2');
         const total = document.createElement('p');
-        const dateBuy = document.createElement('p');
         const button = document.createElement('button');
-        const date = new Date(order.created_at); 
-        const formattedDate = date.toLocaleDateString();
         const itemsContainer = document.createElement('div');
         itemsContainer.style.display = "none";
+        const date = document.createElement('p')
+        const dateSale = new Date(sale.created_at);
+        const formattedDate = dateSale.toLocaleDateString();
 
         div.classList.add('order-card');
         divHeader.classList.add('order-header');
@@ -34,34 +34,35 @@ function showOrders(orders){
         button.classList.add('btn-details');
         itemsContainer.classList.add('container-folding');
 
-
-        title.textContent = `Orden #${order.id}`;
-        total.textContent = `Total: $${order.total}`;
-        dateBuy.textContent = `Date: ${formattedDate}`;
-        button.textContent = `View Details`;
-
-
+        nOrder.textContent = `Id Orden: ${sale.id}`;
+        total.textContent = `$${sale.total}`;
+        button.textContent = 'View Details';
+        date.textContent = `Date: ${formattedDate}`;
 
         button.addEventListener('click', () => {
             if(itemsContainer.style.display === "none"){
                 itemsContainer.style.display = "block";
                 button.textContent = "Hide details";
-                showItems(order.items, itemsContainer);
+                showItems(sale.items, itemsContainer);
             } else {
                 itemsContainer.style.display = "none";
                 button.textContent = "View Details";
             }
-        });
+    });
+    
 
-        divHeader.appendChild(title);
+        divHeader.appendChild(nOrder);
         divHeader.appendChild(total);
         div.appendChild(divHeader);
-        div.appendChild(dateBuy);
+        div.appendChild(date);
         div.appendChild(button);
         div.appendChild(itemsContainer);
+        
         container.appendChild(div);
+    
     })
 }
+
 function showItems(items, container){
     container.innerHTML = "";
     items.forEach(item => {
@@ -71,12 +72,11 @@ function showItems(items, container){
 
     divItem.classList.add('item-line');
 
-    nameProduct.textContent = `${item.name}`;
-    quanBuyer.textContent = `Quantity: ${item.quantity} $${item.unit_price}`
+    nameProduct.textContent = `Product: ${item.product_name} `;
+    quanBuyer.textContent = `Quantity: ${item.quantity} - Buyer Name: ${item.buyer_name}`
     divItem.appendChild(nameProduct);
     divItem.appendChild(quanBuyer);
     container.appendChild(divItem);
     })
 }
-    
-getOrders()
+getSales();

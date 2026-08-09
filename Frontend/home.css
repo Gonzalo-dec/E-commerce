@@ -45,6 +45,17 @@ nav {
 .nav-right a:hover {
     background: #4b5563;
 }
+.input-search {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    width: 300px;
+    font-size: 13px;
+}
+.input-search:focus {
+    box-shadow: 0 0 0 2px #2563eb;
+}
 #session-out {
     font-size: 13px;
     padding: 6px 14px;

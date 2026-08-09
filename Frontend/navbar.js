@@ -18,6 +18,7 @@ document.getElementById('navbar').innerHTML = `
 
     <div class= "nav-right">
         <a href= "orders.html">My purchases</a>
+        <a href= "sales.html"> My Sales</a>
         <a href= "addProduct.html">Upload Product</a>
         <a href= "carrito.html">Cart</a>
         <button id= "session-out">Log Out</button>
