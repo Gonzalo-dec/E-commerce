@@ -1,0 +1,11 @@
+{
+  "$schema": "https://railway.com",
+  "build": {
+    "builder": "NIXPACKS"
+  },
+  "deploy": {
+    "startCommand": "node app.js",
+    "restartPolicyType": "ON_FAILURE",
+    "port": 8080
+  }
+}
