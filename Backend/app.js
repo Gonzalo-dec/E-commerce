@@ -8,6 +8,8 @@ const categoriesRouter = require('./Routes/categories')
 const path = require('path');
 require('dotenv').config(); 
 
+const PORT = process.env.PORT || 3000;
+
 const app = express();
 app.use(cors())
 app.use(express.json());
@@ -24,8 +26,7 @@ app.use('/auth', authRouter);
 
 app.use('/categories', categoriesRouter);
 
-const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-    console.log(`Servidor corriendo en el puerto ${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`Servidor corriendo en el puerto: ${PORT}`);
 })
