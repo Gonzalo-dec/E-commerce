@@ -5,7 +5,7 @@ async function obtenerProductoId(){
     const params = new URLSearchParams(window.location.search);
     const id = params.get('id');
 
-    const response = await fetch(`http://localhost:3000/products/${id}`);
+    const response = await fetch(`${API_URL}/products/${id}`);
     const data = await response.json();
     mostrarProductoId(data.data);
 }
@@ -19,7 +19,14 @@ function mostrarProductoId(producto){
         const price = document.createElement('p');
         const description = document.createElement('p');
         const stock = document.createElement('p');
+        const img = document.createElement('img');
         const button = document.createElement('button');
+
+        if(!prod.image_url){
+            img.style.display = "none";
+        } else {
+            img.src = `${API_URL}${prod.image_url}`;
+        }
 
         div.classList.add("product-sell");
         button.classList.add("button-sell")
@@ -51,6 +58,8 @@ function mostrarProductoId(producto){
         description.textContent = `Description: ${prod.description}`;
         stock.textContent = `Existencias: ${prod.stock}`;
         
+
+        div.appendChild(img);
         div.appendChild(name);
         div.appendChild(price);
         div.appendChild(description);

@@ -14,7 +14,7 @@ const getAllProducts = async (req, res) => {
 const getProductById = async (req, res) => {
     try{
         const id = req.params.id;
-        const [ rows ] = await db.query('SELECT id, name, price, description, stock FROM products  WHERE id = ? ', [id])
+        const [ rows ] = await db.query('SELECT id, name, price, description, stock, image_url FROM products  WHERE id = ? ', [id])
         res.status(200).json({ message:'Producto obtenido con exito', data: rows});
     }catch(err){
         console.error(`Error al obtener el producto ${err}`)
@@ -24,10 +24,11 @@ const getProductById = async (req, res) => {
 const createProduct = async (req, res) => {
     try{
     const { name, price, description, stock, category_id } = req.body;
+    const urlImg = req.file ? `/uploads/${req.file.filename}` : null;
     if(!name || !price || !description || !stock || !category_id){
        return res.status(400).json({message: 'Debes completar los campos obligatorios'})
     }
-    const [ rows ] = await db.query('INSERT INTO products (name, price, description, stock, category_id, user_id) VALUES(?,?,?,?,?,?)', [name, price, description, stock, category_id, req.user.id]);
+    const [ rows ] = await db.query('INSERT INTO products (name, price, description, stock, category_id, user_id, image_url) VALUES(?,?,?,?,?,?,?)', [name, price, description, stock, category_id, req.user.id, urlImg]);
     res.status(201).json({ message: 'Creación exitosa del producto', data: rows});
     } catch(err){
         console.error(err);

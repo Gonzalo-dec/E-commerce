@@ -1,7 +1,7 @@
 const button = document.getElementById('submit')
 
 async function obtenerCategories(){
-    const response = await fetch('http://localhost:3000/categories');
+    const response = await fetch(`${API_URL}/categories`);
     const data = await response.json();
     categoriesSelect(data.data)
 }
@@ -25,6 +25,7 @@ button.addEventListener('click', async (e) => {
     const price = document.getElementById('price').value;
     const description = document.getElementById('description').value;
     const stock = document.getElementById('stock').value;
+    const fileImg = document.getElementById('image').files[0];
     const category_id = document.getElementById('categories').value;
     const token = localStorage.getItem("token");
 
@@ -32,20 +33,21 @@ button.addEventListener('click', async (e) => {
         return alert('Debes completar los campos obligatorios');
     }
 
-    const userData = {
-        name,
-        price,
-        description,
-        stock,
-        category_id
-    }
-    const response = await fetch('http://localhost:3000/products', {
+    const formData = new FormData();
+
+    formData.append('name', name);
+    formData.append('price', price);
+    formData.append('description', description);
+    formData.append('stock', stock);
+    formData.append('image', fileImg);
+    formData.append('category_id', category_id);
+
+    const response = await fetch(`${API_URL}/products`, {
         method: "POST",
         headers: {
             authorization: token,
-            "Content-Type": "application/json"
         },
-        body: JSON.stringify(userData)
+        body: formData
     });
     const data = await response.json();
      

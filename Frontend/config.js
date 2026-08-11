@@ -1,0 +1,1 @@
+const API_URL = 'https://e-commerce-production-169e.up.railway.app'

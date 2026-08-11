@@ -4,7 +4,7 @@ async function renderizarCarrito(){
     container.innerHTML = "";
     const carrito = JSON.parse(localStorage.getItem('carrito')) || [];
     for (const producto of carrito) {
-        const response = await fetch(`http://localhost:3000/products/${producto.id}`);
+        const response = await fetch(`${API_URL}/products/${producto.id}`);
         const data = await response.json()
         const stock = data.data[0].stock;
  
@@ -116,7 +116,7 @@ updateButtons();
             alert('No hay ningun producto en el carrito');
             return;
         }
-        const response = await fetch("http://localhost:3000/orders", {
+        const response = await fetch(`${API_URL}/orders`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

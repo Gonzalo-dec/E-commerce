@@ -16,7 +16,7 @@ sessionOut.addEventListener('click', () => {
 
 async function obtenerCategorias(){
     try{
-        const response = await fetch('http://localhost:3000/categories');
+        const response = await fetch(`${API_URL}/categories`);
         const data = await response.json();
         mostrarCategorias(data.data)
     }catch(err){
@@ -43,7 +43,7 @@ obtenerCategorias();
 async function obtenerProductos(){
     try{
         const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:3000/products', {
+    const response = await fetch(`${API_URL}/products`, {
         headers: {
             authorization: token
         }
@@ -69,6 +69,7 @@ function mostrarProductos(productos){
         const description = document.createElement('p');
         const stock = document.createElement('p');
         const button = document.createElement('button');
+        const img = document.createElement('img');
 
         
 
@@ -82,16 +83,30 @@ function mostrarProductos(productos){
 
         div.classList.add('product-card');
         button.classList.add('buy-btn');
+        description.classList.add('product-description');
         div.addEventListener('click', () => {
     window.location.href = `product.html?id=${producto.id}`;
 });
+
+        if(!producto.image_url){
+            img.style.display = "none"
+        }else {
+            img.src = `${API_URL}${producto.image_url}`;
+        }
 
         name.textContent = producto.name;
         price.textContent = `Precio: $${producto.price}`;
         description.textContent = `Description: ${producto.description}`;
         stock.textContent = `Stock: ${producto.stock}`;
         
+
+        if(!producto.description){
+            description.textContent = 'Sin Descripción';
+        }
+
         
+        
+        div.appendChild(img);
         div.appendChild(name);
         div.appendChild(price);
         div.appendChild(description);

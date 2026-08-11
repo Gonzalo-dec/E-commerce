@@ -20,7 +20,7 @@ const getOrdersById = async (req, res) => {
     try{
     const userId = req.user.id;
     const [ orders ] = await db.query('SELECT * FROM orders WHERE user_id = ? ORDER BY created_at DESC', [userId]);
-    const [ itemsOrder ] = await db.query(`SELECT p.name, oi.unit_price, oi.quantity, oi.order_id
+    const [ itemsOrder ] = await db.query(`SELECT p.name, p.image_url, oi.unit_price, oi.quantity, oi.order_id
         FROM order_items AS oi
         JOIN products AS p ON oi.product_id = p.id
         JOIN orders AS o ON oi.order_id = o.id WHERE o.user_id = ?;
@@ -40,7 +40,7 @@ const getSalesBySeller = async (req, res) => {
     try{
         const sellerId = req.user.id;
         const [ orders ] = await db.query('SELECT * FROM orders WHERE seller_id = ? ORDER BY created_at DESC', [sellerId]);
-        const [ itemsOrder] = await db.query(`SELECT p.name AS product_name, oi.unit_price, oi.quantity, oi.order_id, u.name AS buyer_name, o.total
+        const [ itemsOrder] = await db.query(`SELECT p.name AS product_name, p.image_url, oi.unit_price, oi.quantity, oi.order_id, u.name AS buyer_name, o.total
             FROM order_items AS oi
             JOIN products AS p ON oi.product_id = p.id
             JOIN orders AS o ON oi.order_id = o.id

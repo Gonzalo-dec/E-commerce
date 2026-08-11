@@ -13,7 +13,7 @@ form.addEventListener('submit', async (event) => {
         password
     }
 
-    const response = await fetch("http://localhost:3000/auth/register", {
+    const response = await fetch(`${API_URL}/auth/register`, {
         method:"POST",
         headers:{
             "Content-Type": "application/json"

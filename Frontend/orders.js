@@ -3,7 +3,7 @@ const container = document.querySelector('.container-orders');
 async function getOrders() {
     try {
         const token = localStorage.getItem('token');
-        const response = await fetch('http://localhost:3000/orders', {
+        const response = await fetch(`${API_URL}/orders`, {
             headers: {
                 authorization: token
             }
@@ -22,15 +22,23 @@ function showOrders(orders){
         const title = document.createElement('h2');
         const total = document.createElement('p');
         const dateBuy = document.createElement('p');
+        const img = document.createElement('img');
         const button = document.createElement('button');
         const date = new Date(order.created_at); 
         const formattedDate = date.toLocaleDateString();
         const itemsContainer = document.createElement('div');
         itemsContainer.style.display = "none";
 
+        if(!order.items[0].image_url){
+            img.style.display = "none";
+        } else {
+            img.src = `${API_URL}${order.items[0].image_url}`;
+        }
+
         div.classList.add('order-card');
         divHeader.classList.add('order-header');
         total.classList.add('order-total');
+        img.classList.add('img-order');
         button.classList.add('btn-details');
         itemsContainer.classList.add('container-folding');
 
@@ -56,6 +64,7 @@ function showOrders(orders){
         divHeader.appendChild(title);
         divHeader.appendChild(total);
         div.appendChild(divHeader);
+        div.appendChild(img);
         div.appendChild(dateBuy);
         div.appendChild(button);
         div.appendChild(itemsContainer);

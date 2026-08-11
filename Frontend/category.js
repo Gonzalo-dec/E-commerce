@@ -2,7 +2,7 @@ async function obtenerProductosCategoria(){
     const params = new URLSearchParams(window.location.search);
     const categoryId = params.get('id');
 
-    const response = await fetch(`http://localhost:3000/categories/${categoryId}`)
+    const response = await fetch(`${API_URL}/categories/${categoryId}`)
 
     const data = await response.json();
     mostrarProductosCategoria(data.data)
