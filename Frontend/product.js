@@ -15,6 +15,8 @@ function mostrarProductoId(producto){
     const prod = producto[0];
     
         const div = document.createElement('div')
+        const galleryDiv = document.createElement('div');
+        const infoDiv = document.createElement('div');
         const name = document.createElement('h3');
         const price = document.createElement('p');
         const description = document.createElement('p');
@@ -22,6 +24,8 @@ function mostrarProductoId(producto){
         const img = document.createElement('img');
         const button = document.createElement('button');
 
+        console.log();
+        
         if(!prod.image_url){
             img.style.display = "none";
         } else {
@@ -30,6 +34,11 @@ function mostrarProductoId(producto){
 
         div.classList.add("product-sell");
         button.classList.add("button-sell")
+        price.classList.add('price');
+        description.classList.add('info-product');
+        stock.classList.add('info-product');
+        galleryDiv.classList.add('gallery-div');
+        infoDiv.classList.add('info-div');
         
 
         button.addEventListener('click', () => {
@@ -58,12 +67,14 @@ function mostrarProductoId(producto){
         stock.textContent = `Existencias: ${prod.stock}`;
         
 
-        div.appendChild(img);
-        div.appendChild(name);
-        div.appendChild(price);
-        div.appendChild(description);
-        div.appendChild(stock);
-        div.appendChild(button);
+        galleryDiv.appendChild(img);
+        infoDiv.appendChild(name);
+        infoDiv.appendChild(price);
+        infoDiv.appendChild(description);
+        infoDiv.appendChild(stock);
+        infoDiv.appendChild(button);
+        div.appendChild(galleryDiv);
+        div.appendChild(infoDiv);
         container.appendChild(div);
     }
 
