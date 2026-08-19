@@ -36,11 +36,10 @@ function mostrarProductoId(producto){
         const productoCarrito = carrito.find(p => p.id === prod.id)
         if(productoCarrito){
             productoCarrito.cantidad++;
-            alert("Producto sumado con éxito");
         }else {
             carrito.push({...prod, cantidad:1})
-            alert("Producto agregado con éxito al carrito");
         }
+            mostrarToast();
             localStorage.setItem('carrito', JSON.stringify(carrito));
         })
 
@@ -68,5 +67,14 @@ function mostrarProductoId(producto){
         container.appendChild(div);
     }
 
+const toast = document.getElementById('toast');
+
+function mostrarToast(){
+    toast.classList.add('show');
+
+    setTimeout( () => {
+        toast.classList.remove('show');
+    },3000)
+}
 
 obtenerProductoId();

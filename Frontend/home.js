@@ -26,13 +26,20 @@ async function obtenerCategorias(){
 
 function mostrarCategorias(categorias){
     const container = document.getElementById('categories-container');
+    container.innerHTML = "";
+    container.innerHTML = `<h2 id="title-categories"> Categories </h2>`
     categorias.forEach(categoria => {
         const div = document.createElement('div');
-        const name = document.createElement('a');
-        name.textContent = categoria.name;
-        name.href = `category.html?id=${categoria.id}`;
-
         div.classList.add('cat-card');
+        div.innerHTML = `
+        <label> 
+        <input type="checkbox" value="${categoria.id}" class="filter" onchange="filterCategories()"> 
+        ${categoria.name}
+        </label>
+        `;
+
+        const name = document.createElement('a');
+        name.href = `category.html?id=${categoria.id}`;
         div.appendChild(name);
         container.appendChild(div)
     })
@@ -64,26 +71,18 @@ function mostrarProductos(productos){
     container.innerHTML = "";
     productos.forEach(producto => {
         const div = document.createElement('div')
+        const separator = document.createElement('div');
+        const imageContainer = document.createElement('div');
         const name = document.createElement('h3');
         const price = document.createElement('p');
-        const description = document.createElement('p');
-        const stock = document.createElement('p');
         const button = document.createElement('button');
         const img = document.createElement('img');
 
-        
-
-        if(producto.stock === 0){
-            button.disabled = true;
-            button.textContent = 'Sin stock';
-            div.classList.add('sin-stock');
-        }else {
-            button.textContent = 'Comprar';
-        }
-
         div.classList.add('product-card');
+        separator.classList.add('separator');
+        imageContainer.classList.add('image-container');
+        button.textContent = 'Comprar';
         button.classList.add('buy-btn');
-        description.classList.add('product-description');
         div.addEventListener('click', () => {
     window.location.href = `product.html?id=${producto.id}`;
 });
@@ -95,22 +94,13 @@ function mostrarProductos(productos){
         }
 
         name.textContent = producto.name;
-        price.textContent = `Precio: $${producto.price}`;
-        description.textContent = `Description: ${producto.description}`;
-        stock.textContent = `Stock: ${producto.stock}`;
+        price.textContent = `Precio: $${producto.price}`;   
         
-
-        if(!producto.description){
-            description.textContent = 'Sin Descripción';
-        }
-
-        
-        
-        div.appendChild(img);
-        div.appendChild(name);
-        div.appendChild(price);
-        div.appendChild(description);
-        div.appendChild(stock);
+        imageContainer.appendChild(img);
+        div.appendChild(imageContainer)
+        separator.appendChild(name);
+        separator.appendChild(price);
+        div.appendChild(separator)
         div.appendChild(button);
         container.appendChild(div);
     })
@@ -128,12 +118,21 @@ input.addEventListener('input', (e) => {
 })
 obtenerProductos();
 
-function welcomeUser(){
-const h1 = document.getElementById('welcome');
-const name = localStorage.getItem('name');
-if(!name) {
-    return h1.textContent = `¡Welcome User!`
+function filterCategories(){
+    const checkboxes = document.querySelectorAll('.filter');
+     
+    let categoriesSelected = [];
+    checkboxes.forEach(check => {
+        if(check.checked){
+            categoriesSelected.push(Number(check.value));
+        }
+    })
+    if(categoriesSelected.length === 0){
+        mostrarProductos(productosGlobal);
+        return;
+    }
+    const productsFilter = productosGlobal.filter(p => {
+        return categoriesSelected.includes(p.category_id);
+    })
+    mostrarProductos(productsFilter);
 }
-h1.textContent = `¡Welcome ${name}!`
-}
-welcomeUser();
